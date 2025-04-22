@@ -16,7 +16,7 @@ const DEFAULT_SCALE = 0.25;
 async function getBrowser() {
   if (browser) return browser;
 
-  if (process.env.NEXT_PUBLIC_VERCEL_ENVIRONMENT === "production") {
+  if (process.env.NODE_ENV === "production") {
     browser = await puppeteer.launch({
       args: chromium.args,
       executablePath: await chromium.executablePath(remoteExecutablePath),
