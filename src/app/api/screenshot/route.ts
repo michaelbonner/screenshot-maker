@@ -100,9 +100,9 @@ const inputSchema = z
   });
 
 const isValidOrigin = (headersList: ReadonlyHeaders) => {
-  const origin = headersList.get("origin");
+  const referer = headersList.get("referer");
 
-  if (!origin) {
+  if (!referer) {
     return false;
   }
 
@@ -110,8 +110,8 @@ const isValidOrigin = (headersList: ReadonlyHeaders) => {
     return false;
   }
 
-  return JSON.parse(process.env.ALLOWED_ORIGINS).some((allowedOrigin: string) =>
-    origin.endsWith(allowedOrigin)
+  return JSON.parse(process.env.ALLOWED_ORIGINS).some(
+    (allowedOrigin: string) => new URL(referer).hostname === allowedOrigin
   );
 };
 
