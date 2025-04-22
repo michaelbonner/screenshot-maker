@@ -35,7 +35,8 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-      "domcontentloaded"
+      "domcontentloaded",
+      "networkidle2"
     ],
     "ignoreWords": [],
     "import": []

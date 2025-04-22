@@ -49,7 +49,7 @@ async function getScreenshotAsBase64(
     const browser = await getBrowser();
     const page = await browser.newPage();
     await page.setViewport({ width, height });
-    await page.goto(url, { waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: "networkidle2" });
     return page.screenshot({
       encoding: "base64",
       type: "webp",
