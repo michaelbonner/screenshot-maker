@@ -1,4 +1,5 @@
 import chromium from "@sparticuz/chromium-min";
+import { unstable_cache } from "next/cache";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import { headers } from "next/headers";
 import puppeteer, { Browser } from "puppeteer-core";
@@ -50,8 +51,8 @@ async function getScreenshot(
     await page.setViewport({ width, height });
     await page.goto(url, { waitUntil: "domcontentloaded" });
     return page.screenshot({
-      type: "jpeg",
-      quality: 80,
+      type: "webp",
+      quality: 50,
       clip: {
         scale,
         x: 0,
@@ -166,11 +167,23 @@ export async function GET(request: Request) {
       }
     );
   }
-  const screenshot = await getScreenshot(url, {
-    width: +(width || DEFAULT_WIDTH),
-    height: +(height || DEFAULT_HEIGHT),
-    scale: +(scale || DEFAULT_SCALE),
-  });
+
+  const getCachedScreenshot = unstable_cache(
+    async () =>
+      getScreenshot(url, {
+        width: +(width || DEFAULT_WIDTH),
+        height: +(height || DEFAULT_HEIGHT),
+        scale: +(scale || DEFAULT_SCALE),
+      }),
+    [
+      url,
+      width || DEFAULT_WIDTH.toString(),
+      height || DEFAULT_HEIGHT.toString(),
+      scale || DEFAULT_SCALE.toString(),
+    ]
+  );
+
+  const screenshot = await getCachedScreenshot();
 
   if (!screenshot) {
     return new Response(
@@ -184,6 +197,8 @@ export async function GET(request: Request) {
 
   return new Response(screenshot, {
     status: 200,
-    headers: { "Content-Type": "image/jpeg" },
+    headers: {
+      "Content-Type": "image/webp",
+    },
   });
 }
