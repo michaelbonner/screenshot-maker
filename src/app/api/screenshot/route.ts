@@ -1,4 +1,6 @@
 import chromium from "@sparticuz/chromium-min";
+import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
+import { headers } from "next/headers";
 import puppeteer, { Browser } from "puppeteer-core";
 import { z } from "zod";
 
@@ -95,12 +97,44 @@ const inputSchema = z
     }
   });
 
+const isValidOrigin = (headersList: ReadonlyHeaders) => {
+  const origin = headersList.get("origin");
+
+  if (!origin) {
+    return false;
+  }
+
+  if (!process.env.ALLOWED_ORIGINS) {
+    return false;
+  }
+
+  return JSON.parse(process.env.ALLOWED_ORIGINS).some((allowedOrigin: string) =>
+    origin.endsWith(allowedOrigin)
+  );
+};
+
+const isValidKey = (key: string | null) => {
+  if (!key) {
+    return false;
+  }
+
+  return key === process.env.API_KEY;
+};
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const headersList = await headers();
+
   const url = searchParams.get("url");
   const width = searchParams.get("width");
   const height = searchParams.get("height");
   const scale = searchParams.get("scale");
+  const key = searchParams.get("key");
+
+  // check key or host is valid
+  if (!isValidKey(key) && !isValidOrigin(headersList)) {
+    return Response.json({ message: `Unauthorized` }, { status: 401 });
+  }
 
   const validationResult = inputSchema.safeParse({ url, width, height, scale });
 
