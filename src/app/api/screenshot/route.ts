@@ -7,6 +7,10 @@ const remoteExecutablePath =
 
 let browser: Browser | null = null;
 
+const DEFAULT_WIDTH = 1920;
+const DEFAULT_HEIGHT = 1080;
+const DEFAULT_SCALE = 0.25;
+
 async function getBrowser() {
   if (browser) return browser;
 
@@ -34,9 +38,9 @@ async function getScreenshot(
     scale: number;
   }
 ) {
-  const width = options.width || 1920;
-  const height = options.height || 1080;
-  const scale = options.scale || 0.25;
+  const width = options.width;
+  const height = options.height;
+  const scale = options.scale;
 
   try {
     const browser = await getBrowser();
@@ -63,9 +67,9 @@ async function getScreenshot(
 const inputSchema = z
   .object({
     url: z.string().url(),
-    width: z.coerce.number().optional().default(1920),
-    height: z.coerce.number().optional().default(1080),
-    scale: z.coerce.number().max(1).optional().default(0.25),
+    width: z.coerce.number().optional(),
+    height: z.coerce.number().optional(),
+    scale: z.coerce.number().max(1).optional(),
   })
   .superRefine((data, ctx) => {
     const hasWidth = data.width;
@@ -129,9 +133,9 @@ export async function GET(request: Request) {
     );
   }
   const screenshot = await getScreenshot(url, {
-    width: +width,
-    height: +height,
-    scale: +scale,
+    width: +(width || DEFAULT_WIDTH),
+    height: +(height || DEFAULT_HEIGHT),
+    scale: +(scale || DEFAULT_SCALE),
   });
 
   if (!screenshot) {
