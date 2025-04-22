@@ -26,5 +26,16 @@
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "cspell": {
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+      "domcontentloaded"
+    ],
+    "ignoreWords": [],
+    "import": []
   }
 }

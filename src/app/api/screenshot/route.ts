@@ -33,7 +33,7 @@ async function getBrowser() {
   return browser;
 }
 
-async function getScreenshot(
+async function getScreenshotAsBase64(
   url: string,
   options: {
     width: number;
@@ -51,6 +51,7 @@ async function getScreenshot(
     await page.setViewport({ width, height });
     await page.goto(url, { waitUntil: "domcontentloaded" });
     return page.screenshot({
+      encoding: "base64",
       type: "webp",
       quality: 50,
       clip: {
@@ -169,21 +170,31 @@ export async function GET(request: Request) {
   }
 
   const getCachedScreenshot = unstable_cache(
-    async () =>
-      getScreenshot(url, {
-        width: +(width || DEFAULT_WIDTH),
-        height: +(height || DEFAULT_HEIGHT),
-        scale: +(scale || DEFAULT_SCALE),
+    async (url: string, width: number, height: number, scale: number) =>
+      getScreenshotAsBase64(url, {
+        width,
+        height,
+        scale,
       }),
     [
       url,
       width || DEFAULT_WIDTH.toString(),
       height || DEFAULT_HEIGHT.toString(),
       scale || DEFAULT_SCALE.toString(),
-    ]
+    ],
+    {
+      tags: [url],
+      // 1 hour
+      revalidate: 3600,
+    }
   );
 
-  const screenshot = await getCachedScreenshot();
+  const screenshot = await getCachedScreenshot(
+    url,
+    +(width || DEFAULT_WIDTH),
+    +(height || DEFAULT_HEIGHT),
+    +(scale || DEFAULT_SCALE)
+  );
 
   if (!screenshot) {
     return new Response(
@@ -195,10 +206,10 @@ export async function GET(request: Request) {
     );
   }
 
-  return new Response(screenshot, {
+  //   convert the base64 string to a buffer we can return as an image response
+  const buffer = Buffer.from(screenshot, "base64");
+  return new Response(buffer, {
     status: 200,
-    headers: {
-      "Content-Type": "image/webp",
-    },
+    headers: { "Content-Type": "image/webp" },
   });
 }
