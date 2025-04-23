@@ -62,6 +62,7 @@ async function getScreenshotAsBase64(
         width,
         height,
       },
+      optimizeForSpeed: true,
     });
   } catch (error) {
     console.error("Error accessing page:", error);
@@ -211,6 +212,11 @@ export async function GET(request: Request) {
   const buffer = Buffer.from(screenshot, "base64");
   return new Response(buffer, {
     status: 200,
-    headers: { "Content-Type": "image/webp" },
+    headers: {
+      "Content-Type": "image/webp",
+      "Content-Disposition": `inline; filename="${url}.webp"`,
+      "Content-Length": buffer.length.toString(),
+      "Cache-Control": "public, max-age=3600",
+    },
   });
 }
