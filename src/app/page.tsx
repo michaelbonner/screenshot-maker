@@ -28,6 +28,11 @@ const args = [
     type: "number?",
     description: "The quality of the screenshot",
   },
+  {
+    name: "fullPage",
+    type: "boolean?",
+    description: "Whether to take a full page screenshot",
+  },
 ];
 
 export default function Home() {

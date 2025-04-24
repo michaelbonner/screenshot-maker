@@ -9,6 +9,8 @@ export const inputSchema = z
     width: z.coerce.number().optional(),
     height: z.coerce.number().optional(),
     scale: z.coerce.number().max(1).optional(),
+    quality: z.coerce.number().min(0).max(100).optional(),
+    fullPage: z.coerce.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     const hasWidth = data.width;
@@ -39,7 +41,7 @@ const remoteExecutablePath =
 
 let browser: Browser | null = null;
 
-async function getBrowser() {
+async function getBrowser(defaultViewport: { width: number; height: number }) {
   if (browser) return browser;
 
   if (process.env.NODE_ENV === "production") {
@@ -53,6 +55,7 @@ async function getBrowser() {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: true,
       channel: "chrome",
+      defaultViewport,
     });
   }
   return browser;
@@ -65,14 +68,20 @@ export async function getScreenshotAsBase64(
     height: number;
     scale: number;
     quality: number;
+    fullPage: boolean;
   }
 ) {
   const width = options.width;
   const height = options.height;
   const scale = options.scale;
   const quality = options.quality;
+  const fullPage = options.fullPage;
+
   try {
-    const browser = await getBrowser();
+    const browser = await getBrowser({
+      width,
+      height,
+    });
     const page = await browser.newPage();
     await page.setViewport({ width, height });
     await page.goto(url, { waitUntil: "networkidle2" });
@@ -81,14 +90,18 @@ export async function getScreenshotAsBase64(
       encoding: "base64",
       type: "webp",
       quality,
-      clip: {
-        scale,
-        x: 0,
-        y: 0,
-        width,
-        height,
-      },
+      clip: fullPage
+        ? undefined
+        : {
+            scale,
+            x: 0,
+            y: 0,
+            width,
+            height,
+          },
       optimizeForSpeed: true,
+
+      fullPage: fullPage ? true : undefined,
     });
   } catch (error) {
     console.error("Error accessing page:", error);

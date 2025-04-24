@@ -11,18 +11,21 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const headersList = await headers();
 
-  const url = searchParams.get("url");
-  const width = searchParams.get("width");
-  const height = searchParams.get("height");
-  const scale = searchParams.get("scale");
-  const key = searchParams.get("key");
-  const quality = searchParams.get("quality");
+  const { url, width, height, scale, key, quality, fullPage } =
+    Object.fromEntries(searchParams.entries());
+
   // check key or host is valid
   if (!checkAuth(headersList, key)) {
     return Response.json({ message: `Unauthorized` }, { status: 401 });
   }
 
-  const validationResult = inputSchema.safeParse({ url, width, height, scale });
+  const validationResult = inputSchema.safeParse({
+    url,
+    width,
+    height,
+    scale,
+    fullPage,
+  });
 
   if (!validationResult.success) {
     return Response.json(
@@ -40,13 +43,15 @@ export async function GET(request: Request) {
       width: number,
       height: number,
       scale: number,
-      quality: number
+      quality: number,
+      fullPage: boolean
     ) =>
       getScreenshotAsBase64(url, {
         width,
         height,
         scale,
         quality,
+        fullPage,
       }),
     [
       validationResult.data.url,
@@ -61,12 +66,15 @@ export async function GET(request: Request) {
     }
   );
 
+  console.log("validationResult.data.fullPage", validationResult.data.fullPage);
+
   const screenshot = await getCachedScreenshot(
     validationResult.data.url,
     +(width || DEFAULT_WIDTH),
     +(height || DEFAULT_HEIGHT),
     +(scale || DEFAULT_SCALE),
-    +(quality || DEFAULT_QUALITY)
+    +(quality || DEFAULT_QUALITY),
+    validationResult.data.fullPage ?? false
   );
 
   if (!screenshot) {
