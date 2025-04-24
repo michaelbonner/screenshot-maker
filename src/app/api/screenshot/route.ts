@@ -5,6 +5,7 @@ import { checkAuth, getScreenshotAsBase64, inputSchema } from "./helpers";
 const DEFAULT_WIDTH = 1920;
 const DEFAULT_HEIGHT = 1080;
 const DEFAULT_SCALE = 0.25;
+const DEFAULT_QUALITY = 50;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
   const height = searchParams.get("height");
   const scale = searchParams.get("scale");
   const key = searchParams.get("key");
-
+  const quality = searchParams.get("quality");
   // check key or host is valid
   if (!checkAuth(headersList, key)) {
     return Response.json({ message: `Unauthorized` }, { status: 401 });
@@ -34,11 +35,18 @@ export async function GET(request: Request) {
   }
 
   const getCachedScreenshot = unstable_cache(
-    async (url: string, width: number, height: number, scale: number) =>
+    async (
+      url: string,
+      width: number,
+      height: number,
+      scale: number,
+      quality: number
+    ) =>
       getScreenshotAsBase64(url, {
         width,
         height,
         scale,
+        quality,
       }),
     [
       validationResult.data.url,
@@ -57,7 +65,8 @@ export async function GET(request: Request) {
     validationResult.data.url,
     +(width || DEFAULT_WIDTH),
     +(height || DEFAULT_HEIGHT),
-    +(scale || DEFAULT_SCALE)
+    +(scale || DEFAULT_SCALE),
+    +(quality || DEFAULT_QUALITY)
   );
 
   if (!screenshot) {

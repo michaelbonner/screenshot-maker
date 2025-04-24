@@ -64,12 +64,13 @@ export async function getScreenshotAsBase64(
     width: number;
     height: number;
     scale: number;
+    quality: number;
   }
 ) {
   const width = options.width;
   const height = options.height;
   const scale = options.scale;
-
+  const quality = options.quality;
   try {
     const browser = await getBrowser();
     const page = await browser.newPage();
@@ -79,7 +80,7 @@ export async function getScreenshotAsBase64(
     return page.screenshot({
       encoding: "base64",
       type: "webp",
-      quality: 50,
+      quality,
       clip: {
         scale,
         x: 0,
