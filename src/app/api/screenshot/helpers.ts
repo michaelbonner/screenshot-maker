@@ -112,11 +112,11 @@ export async function getScreenshotAsBase64(
 export const checkAuth = (headersList: ReadonlyHeaders, key: string | null) => {
   if (process.env.BYPASS_AUTH_CHECK === "true") return true;
 
-  if (!isValidKey(key)) return false;
+  if (isValidKey(key)) return true;
 
-  if (!isValidOrigin(headersList)) return false;
+  if (isValidOrigin(headersList)) return true;
 
-  return true;
+  return false;
 };
 
 const isValidOrigin = (headersList: ReadonlyHeaders) => {
