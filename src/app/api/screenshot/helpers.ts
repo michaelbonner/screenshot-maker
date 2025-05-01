@@ -1,40 +1,6 @@
 import chromium from "@sparticuz/chromium-min";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import puppeteer, { Browser } from "puppeteer-core";
-import { z } from "zod";
-
-export const inputSchema = z
-  .object({
-    url: z.string().url(),
-    width: z.coerce.number().optional(),
-    height: z.coerce.number().optional(),
-    scale: z.coerce.number().max(1).optional(),
-    quality: z.coerce.number().min(0).max(100).optional(),
-    fullPage: z.coerce.boolean().optional(),
-  })
-  .superRefine((data, ctx) => {
-    const hasWidth = data.width;
-    const hasHeight = data.height;
-
-    if (hasWidth && hasHeight) return;
-    if (!hasWidth && !hasHeight) return;
-
-    // If exactly one of width/height is supplied, error
-    if (!hasWidth) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Width is required when height is provided",
-        path: ["width"],
-      });
-    }
-    if (!hasHeight) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Height is required when width is provided",
-        path: ["height"],
-      });
-    }
-  });
 
 const remoteExecutablePath =
   "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
@@ -71,11 +37,7 @@ export async function getScreenshotAsBase64(
     fullPage: boolean;
   }
 ) {
-  const width = options.width;
-  const height = options.height;
-  const scale = options.scale;
-  const quality = options.quality;
-  const fullPage = options.fullPage;
+  const { width, height, scale, quality, fullPage } = options;
 
   try {
     const browser = await getBrowser({
@@ -100,8 +62,7 @@ export async function getScreenshotAsBase64(
             height,
           },
       optimizeForSpeed: true,
-
-      fullPage: fullPage ? true : undefined,
+      fullPage,
     });
   } catch (error) {
     console.error("Error accessing page:", error);
