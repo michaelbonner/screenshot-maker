@@ -180,6 +180,21 @@ export const UrlBuilderForm = () => {
             )}
           </div>
         </div>
+        <div>
+          <label className={styles.label} htmlFor="url">
+            API Key
+          </label>
+          <input
+            className={styles.inputText}
+            type="text"
+            id="key"
+            placeholder="your-api-key"
+            {...register("key")}
+          />
+          {errors.key && (
+            <span className={styles.error}>{errors.key.message}</span>
+          )}
+        </div>
         <div className="mt-2">
           <button className={styles.button} type="submit">
             Generate Screenshot URL

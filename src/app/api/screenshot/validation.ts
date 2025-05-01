@@ -15,4 +15,5 @@ export const inputSchema = z.object({
     .union([z.coerce.number().min(1).max(100), z.literal("")])
     .optional(),
   fullPage: z.coerce.boolean().optional(),
+  key: z.string().optional(),
 });
