@@ -21,7 +21,13 @@ http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width
 
 ## Getting Started
 
-First, run the development server:
+Copy the .env.example to .env.local and adjust the values to your needs.
+
+```bash
+cp .env.example .env.local
+```
+
+Run the development server:
 
 ```bash
 bun install
@@ -29,6 +35,9 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You probably don't want to have this open to the public. To see the authentication methods check out the `.env.example`. You can
+lock it down by referrer, by API key, or bypass it altogether when testing locally.
 
 ## Need some dev help?
 
