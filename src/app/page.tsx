@@ -46,7 +46,7 @@ export default function Home() {
             <div>
               <code className="block text-sm border rounded-md p-4">
                 <Link
-                  className="hover:underline underline-offset-4"
+                  className="underline underline-offset-4"
                   href="http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width=1920&height=1080&scale=0.25&quality=50"
                   target="_blank"
                 >
@@ -83,6 +83,17 @@ export default function Home() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+            <h2>GitHub Repo</h2>
+            <p>
+              <a
+                className="underline underline-offset-4"
+                href="https://github.com/michaelbonner/screenshot-maker"
+              >
+                Learn more about the screenshot generator on the GitHub repo
+              </a>
+            </p>
           </div>
         </div>
       </main>
