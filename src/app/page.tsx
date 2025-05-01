@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { UrlBuilderForm } from "./components/UrlBuilderForm";
 
 const args = [
   {
@@ -41,17 +42,18 @@ const args = [
   },
 ];
 
+const url = "https://bootpackdigital.com";
 const exampleUrl = new URL("http://localhost:3000/api/screenshot");
-exampleUrl.searchParams.append("url", "https://bootpackdigital.com");
+exampleUrl.searchParams.append("url", url);
 
 export default function Home() {
   return (
     <div className="grid gap-24 min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="max-w-7xl mx-auto grid gap-12">
-        <h1 className="text-4xl font-bold">Screenshot Maker</h1>
-        <div className="grid gap-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-4">
+      <main className="max-w-7xl mx-auto grid gap-12 lg:gap-24">
+        <h1 className="text-4xl lg:text-6xl font-bold">Screenshot Maker</h1>
+        <div className="grid gap-8 lg:gap-16 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2">
           <div>
-            <h2>Example</h2>
+            <h2>Basic Example</h2>
             <div>
               <code className="block text-sm border rounded-md p-4">
                 <Link
@@ -90,6 +92,10 @@ export default function Home() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+            <h2>URL Builder</h2>
+            <UrlBuilderForm />
           </div>
           <div>
             <h2>GitHub Repo</h2>

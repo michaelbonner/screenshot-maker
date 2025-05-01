@@ -1,27 +1,14 @@
 import { unstable_cache } from "next/cache";
 import { headers } from "next/headers";
 import { checkAuth, getScreenshotAsBase64 } from "./helpers";
-import { z } from "zod";
-
-const DEFAULT_WIDTH = 1920;
-const DEFAULT_HEIGHT = 1080;
-const DEFAULT_SCALE = 0.25;
-const DEFAULT_QUALITY = 50;
-const DEFAULT_FULL_PAGE = false;
-
-const inputSchema = z.object({
-  url: z.string().url(),
-  width: z.coerce.number().optional().default(DEFAULT_WIDTH),
-  height: z.coerce.number().optional().default(DEFAULT_HEIGHT),
-  scale: z.coerce.number().max(1).optional().default(DEFAULT_SCALE),
-  quality: z.coerce
-    .number()
-    .min(0)
-    .max(100)
-    .optional()
-    .default(DEFAULT_QUALITY),
-  fullPage: z.coerce.boolean().optional().default(DEFAULT_FULL_PAGE),
-});
+import {
+  DEFAULT_FULL_PAGE,
+  DEFAULT_HEIGHT,
+  DEFAULT_QUALITY,
+  DEFAULT_SCALE,
+  DEFAULT_WIDTH,
+  inputSchema,
+} from "./validation";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -64,19 +51,20 @@ export async function GET(request: Request) {
       fullPage: boolean
     ) =>
       getScreenshotAsBase64(url, {
-        width,
-        height,
-        scale,
-        quality,
-        fullPage,
+        width: width || DEFAULT_WIDTH,
+        height: height || DEFAULT_HEIGHT,
+        scale: scale || DEFAULT_SCALE,
+        quality: quality || DEFAULT_QUALITY,
+        fullPage: fullPage ?? DEFAULT_FULL_PAGE,
       }),
     [
       validationResult.data.url,
-      validationResult.data.width.toString(),
-      validationResult.data.height.toString(),
-      validationResult.data.scale.toString(),
-      validationResult.data.quality.toString(),
-      validationResult.data.fullPage.toString(),
+      validationResult.data.width?.toString() || DEFAULT_WIDTH.toString(),
+      validationResult.data.height?.toString() || DEFAULT_HEIGHT.toString(),
+      validationResult.data.scale?.toString() || DEFAULT_SCALE.toString(),
+      validationResult.data.quality?.toString() || DEFAULT_QUALITY.toString(),
+      validationResult.data.fullPage?.toString() ||
+        DEFAULT_FULL_PAGE.toString(),
     ],
     {
       tags: [validationResult.data.url],
@@ -87,11 +75,11 @@ export async function GET(request: Request) {
 
   const screenshot = await getCachedScreenshot(
     validationResult.data.url,
-    validationResult.data.width,
-    validationResult.data.height,
-    validationResult.data.scale,
-    validationResult.data.quality,
-    validationResult.data.fullPage
+    validationResult.data.width || DEFAULT_WIDTH,
+    validationResult.data.height || DEFAULT_HEIGHT,
+    validationResult.data.scale || DEFAULT_SCALE,
+    validationResult.data.quality || DEFAULT_QUALITY,
+    validationResult.data.fullPage || DEFAULT_FULL_PAGE
   );
 
   if (!screenshot) {
