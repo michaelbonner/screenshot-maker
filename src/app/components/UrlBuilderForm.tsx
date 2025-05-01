@@ -69,12 +69,12 @@ export const UrlBuilderForm = () => {
   };
 
   return (
-    <div className="grid gap-8 border p-8 rounded-lg">
+    <div className="grid gap-8 border p-8">
       <form
         method="GET"
         action="/api/screenshot"
         target="_blank"
-        className="grid gap-4"
+        className="grid gap-x-4 gap-y-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
@@ -92,7 +92,7 @@ export const UrlBuilderForm = () => {
             <span className={styles.error}>{errors.url.message}</span>
           )}
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           <div>
             <label className={styles.label} htmlFor="width">
               Width
@@ -180,7 +180,7 @@ export const UrlBuilderForm = () => {
             )}
           </div>
         </div>
-        <div>
+        <div className="mt-2">
           <button className={styles.button} type="submit">
             Generate Screenshot URL
           </button>
@@ -209,7 +209,7 @@ const styles = {
   label: "block text-sm font-medium mb-2",
   inputText: "block w-full border rounded-md p-2",
   checkbox:
-    "block size-6 appearance-none rounded-md border border-gray-300 checked:bg-indigo-500",
+    "block size-10 appearance-none rounded-md border border-gray-300 checked:bg-indigo-500 checked:border-2",
   button: "bg-indigo-500 text-white px-4 py-2 rounded-md cursor-pointer",
   error: "text-red-500 text-sm",
 };
