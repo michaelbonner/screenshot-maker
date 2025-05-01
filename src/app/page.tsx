@@ -55,7 +55,9 @@ const args = [
 ];
 
 const url = "https://bootpackdigital.com";
-const exampleUrl = new URL("http://localhost:3000/api/screenshot");
+const exampleUrl = new URL(
+  "https://screenshot-maker.bootpack.dev/api/screenshot"
+);
 exampleUrl.searchParams.append("url", url);
 
 export default function Home() {
@@ -76,6 +78,9 @@ export default function Home() {
                   {exampleUrl.toString()}
                 </Link>
               </code>
+              <p className="text-sm mt-1">
+                Note: This URL will only work if you have a valid API key.
+              </p>
             </div>
           </div>
           <div>
