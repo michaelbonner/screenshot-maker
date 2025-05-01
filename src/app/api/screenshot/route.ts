@@ -66,8 +66,6 @@ export async function GET(request: Request) {
     }
   );
 
-  console.log("validationResult.data.fullPage", validationResult.data.fullPage);
-
   const screenshot = await getCachedScreenshot(
     validationResult.data.url,
     +(width || DEFAULT_WIDTH),
