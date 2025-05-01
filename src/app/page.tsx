@@ -46,6 +46,12 @@ const args = [
     description: "The API key to use for the screenshot",
     default: "",
   },
+  {
+    name: "type",
+    type: '("png" | "jpeg" | "webp")?',
+    description: "The type of the screenshot",
+    default: "webp",
+  },
 ];
 
 const url = "https://bootpackdigital.com";

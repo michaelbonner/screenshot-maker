@@ -1,6 +1,6 @@
 import chromium from "@sparticuz/chromium-min";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import puppeteer, { Browser } from "puppeteer-core";
+import puppeteer, { Browser, ScreenshotOptions } from "puppeteer-core";
 
 const CHROMIUM_VERSION = "v133.0.0";
 
@@ -34,11 +34,9 @@ export async function getScreenshotAsBase64(
     width: number;
     height: number;
     scale: number;
-    quality: number;
-    fullPage: boolean;
-  }
+  } & ScreenshotOptions
 ) {
-  const { width, height, scale, quality, fullPage } = options;
+  const { width, height, scale, quality, fullPage, type } = options;
 
   try {
     const browser = await getBrowser({
@@ -51,8 +49,8 @@ export async function getScreenshotAsBase64(
     await new Promise((r) => setTimeout(r, 2000));
     return page.screenshot({
       encoding: "base64",
-      type: "webp",
-      quality,
+      type,
+      quality: type !== "png" ? quality : undefined,
       clip: fullPage
         ? undefined
         : {
@@ -64,6 +62,7 @@ export async function getScreenshotAsBase64(
           },
       optimizeForSpeed: true,
       fullPage,
+      ...options,
     });
   } catch (error) {
     console.error("Error accessing page:", error);

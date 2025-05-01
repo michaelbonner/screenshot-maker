@@ -6,15 +6,17 @@ import {
   DEFAULT_HEIGHT,
   DEFAULT_QUALITY,
   DEFAULT_SCALE,
+  DEFAULT_TYPE,
   DEFAULT_WIDTH,
   inputSchema,
 } from "./validation";
+import { ScreenshotOptions } from "puppeteer-core";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const headersList = await headers();
 
-  const { url, width, height, scale, key, quality, fullPage } =
+  const { url, width, height, scale, key, quality, fullPage, type } =
     Object.fromEntries(searchParams.entries());
 
   // check key or host is valid
@@ -29,6 +31,7 @@ export async function GET(request: Request) {
     quality,
     scale,
     fullPage,
+    type,
   });
 
   if (!validationResult.success) {
@@ -48,7 +51,8 @@ export async function GET(request: Request) {
       height: number,
       scale: number,
       quality: number,
-      fullPage: boolean
+      fullPage: boolean,
+      type: ScreenshotOptions["type"]
     ) =>
       getScreenshotAsBase64(url, {
         width: width || DEFAULT_WIDTH,
@@ -56,6 +60,7 @@ export async function GET(request: Request) {
         scale: scale || DEFAULT_SCALE,
         quality: quality || DEFAULT_QUALITY,
         fullPage: fullPage ?? DEFAULT_FULL_PAGE,
+        type: type ?? DEFAULT_TYPE,
       }),
     [
       validationResult.data.url,
@@ -65,6 +70,7 @@ export async function GET(request: Request) {
       validationResult.data.quality?.toString() || DEFAULT_QUALITY.toString(),
       validationResult.data.fullPage?.toString() ||
         DEFAULT_FULL_PAGE.toString(),
+      validationResult.data.type || DEFAULT_TYPE,
     ],
     {
       tags: [validationResult.data.url],
@@ -79,7 +85,8 @@ export async function GET(request: Request) {
     validationResult.data.height || DEFAULT_HEIGHT,
     validationResult.data.scale || DEFAULT_SCALE,
     validationResult.data.quality || DEFAULT_QUALITY,
-    validationResult.data.fullPage || DEFAULT_FULL_PAGE
+    validationResult.data.fullPage || DEFAULT_FULL_PAGE,
+    validationResult.data.type || DEFAULT_TYPE
   );
 
   if (!screenshot) {
@@ -97,8 +104,8 @@ export async function GET(request: Request) {
   return new Response(buffer, {
     status: 200,
     headers: {
-      "Content-Type": "image/webp",
-      "Content-Disposition": `inline; filename="${url}.webp"`,
+      "Content-Type": `image/${type}`,
+      "Content-Disposition": `inline; filename="${url}.${type}"`,
       "Content-Length": buffer.length.toString(),
       "Cache-Control": "public, max-age=3600",
     },

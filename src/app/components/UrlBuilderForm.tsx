@@ -14,6 +14,7 @@ import {
   DEFAULT_HEIGHT,
   DEFAULT_QUALITY,
   DEFAULT_SCALE,
+  DEFAULT_TYPE,
   DEFAULT_WIDTH,
   inputSchema,
 } from "../api/screenshot/validation";
@@ -44,6 +45,7 @@ export const UrlBuilderForm = () => {
     defaultValues: {
       url: defaultUrl,
     },
+    mode: "onChange",
     resolver: zodResolver(inputSchema),
   });
 
@@ -51,16 +53,25 @@ export const UrlBuilderForm = () => {
     const screenshotUrl = new URL(window.location.origin);
     screenshotUrl.pathname = "/api/screenshot";
 
-    const objectKeys = Object.keys(data);
+    const parsedData = inputSchema.safeParse(data);
+    if (!parsedData.success) {
+      return "Invalid input detected";
+    }
+
+    const objectKeys = Object.keys(parsedData.data);
 
     objectKeys.forEach((key) => {
-      if (data[key as keyof Inputs]) {
+      if (parsedData.data[key as keyof Inputs]) {
         screenshotUrl.searchParams.set(
           key,
-          data[key as keyof Inputs]?.toString() || ""
+          parsedData.data[key as keyof Inputs]?.toString() || ""
         );
       }
     });
+
+    if (parsedData.data?.type && parsedData.data.type === DEFAULT_TYPE) {
+      screenshotUrl.searchParams.delete("type");
+    }
 
     return screenshotUrl.toString();
   };
@@ -69,7 +80,8 @@ export const UrlBuilderForm = () => {
     setGeneratedUrl(generateUrl(data));
   };
 
-  const { url, key, width, height, scale, quality, fullPage } = methods.watch();
+  const { url, key, width, height, scale, quality, fullPage, type } =
+    methods.watch();
   useEffect(() => {
     setGeneratedUrl(
       generateUrl({
@@ -80,9 +92,10 @@ export const UrlBuilderForm = () => {
         scale,
         quality,
         fullPage,
+        type,
       })
     );
-  }, [url, key, width, height, scale, quality, fullPage]);
+  }, [url, key, width, height, scale, quality, fullPage, type]);
 
   return (
     <div className="grid gap-8 border p-8">
@@ -125,6 +138,16 @@ export const UrlBuilderForm = () => {
               step={0.1}
               type="number"
             />
+            <SelectField
+              id="type"
+              label="Type"
+              placeholder={DEFAULT_TYPE}
+              options={[
+                { label: "WebP", value: "webp" },
+                { label: "PNG", value: "png" },
+                { label: "JPEG", value: "jpeg" },
+              ]}
+            />
             <InputField
               id="quality"
               label="Quality"
@@ -134,8 +157,14 @@ export const UrlBuilderForm = () => {
               type="number"
             />
             <InputField label="Full Page" id="fullPage" type="checkbox" />
+            <InputField
+              className="lg:col-span-2"
+              label="API Key"
+              id="key"
+              type="text"
+              placeholder="your-api-key"
+            />
           </div>
-          <InputField label="API Key" id="key" type="text" />
         </form>
       </FormProvider>
 
@@ -171,21 +200,56 @@ const InputField = ({
   } = useFormContext<Inputs>();
 
   return (
-    <div>
+    <div className={props.className}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
       <input
         id={id}
+        {...props}
         className={
           props.type === "checkbox" ? styles.checkbox : styles.inputText
         }
-        {...props}
         {...register(id)}
       />
       {errors[id] && (
         <span className={styles.error}>{errors[id]?.message}</span>
       )}
+    </div>
+  );
+};
+
+const SelectField = ({
+  id,
+  label,
+  options,
+  placeholder,
+  ...props
+}: {
+  id: keyof Inputs;
+  label: string;
+  options: { label: string; value: string }[];
+  placeholder: string;
+} & React.SelectHTMLAttributes<HTMLSelectElement>) => {
+  const { register } = useFormContext<Inputs>();
+
+  return (
+    <div className={props.className}>
+      <label className={styles.label} htmlFor={id}>
+        {label}
+      </label>
+      <select
+        className={styles.inputText}
+        id={id}
+        {...register(id)}
+        defaultValue={placeholder}
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
