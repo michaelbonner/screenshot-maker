@@ -5,33 +5,39 @@ const args = [
     name: "url",
     type: "string",
     description: "The URL of the page to screenshot",
+    default: "",
     required: true,
   },
   {
     name: "width",
     type: "number?",
-    description: "The width of the screenshot",
+    description: "The width of the viewport",
+    default: 1920,
   },
   {
     name: "height",
     type: "number?",
-    description: "The height of the screenshot",
+    description: "The height of the viewport",
+    default: 1080,
   },
   {
     name: "scale",
     type: "number?",
     description:
       "The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1.",
+    default: 0.25,
   },
   {
     name: "quality",
     type: "number?",
     description: "The quality of the screenshot. Between 1-100.",
+    default: 50,
   },
   {
     name: "fullPage",
     type: "boolean?",
     description: "Whether to take a full page screenshot",
+    default: false,
   },
 ];
 

@@ -10,14 +10,14 @@ http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width
 
 ## Query Args
 
-| Name     | Type     | Description                                                                                             |
-| -------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| url      | string   | The URL of the page to screenshot.                                                                      |
-| width    | number?  | The width of the screenshot.                                                                            |
-| height   | number?  | The height of the screenshot.                                                                           |
-| scale    | number?  | The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1. |
-| quality  | number?  | The quality of the screenshot. Between 1-100.                                                           |
-| fullPage | boolean? | Whether to take a full page screenshot.                                                                 |
+| Name     | Type     | Default | Description                                                                                             |
+| -------- | -------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| url      | string   |         | The URL of the page to screenshot.                                                                      |
+| width    | number?  | 1920    | The width of the viewport.                                                                              |
+| height   | number?  | 1080    | The height of the viewport.                                                                             |
+| scale    | number?  | 0.25    | The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1. |
+| quality  | number?  | 50      | The quality of the screenshot. Between 1-100.                                                           |
+| fullPage | boolean? | false   | Whether to take a full page screenshot.                                                                 |
 
 ## Getting Started
 
