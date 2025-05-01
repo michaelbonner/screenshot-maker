@@ -2,8 +2,9 @@ import chromium from "@sparticuz/chromium-min";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 import puppeteer, { Browser } from "puppeteer-core";
 
-const remoteExecutablePath =
-  "https://github.com/Sparticuz/chromium/releases/download/v121.0.0/chromium-v121.0.0-pack.tar";
+const CHROMIUM_VERSION = "v133.0.0";
+
+const remoteExecutablePath = `https://github.com/Sparticuz/chromium/releases/download/${CHROMIUM_VERSION}/chromium-${CHROMIUM_VERSION}-pack.tar`;
 
 let browser: Browser | null = null;
 
