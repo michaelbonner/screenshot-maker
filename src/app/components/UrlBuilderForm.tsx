@@ -18,7 +18,7 @@ import {
   inputSchema,
 } from "../api/screenshot/validation";
 
-const url = "https://bootpackdigital.com";
+const defaultUrl = "https://bootpackdigital.com";
 
 type Inputs = z.infer<typeof inputSchema>;
 
@@ -30,7 +30,7 @@ export const UrlBuilderForm = () => {
   useEffect(() => {
     setGeneratedUrl(
       generateUrl({
-        url,
+        url: defaultUrl,
         width: 0,
         height: 0,
         scale: 0,
@@ -42,7 +42,7 @@ export const UrlBuilderForm = () => {
 
   const methods = useForm<Inputs>({
     defaultValues: {
-      url,
+      url: defaultUrl,
     },
     resolver: zodResolver(inputSchema),
   });
@@ -68,6 +68,21 @@ export const UrlBuilderForm = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setGeneratedUrl(generateUrl(data));
   };
+
+  const { url, key, width, height, scale, quality, fullPage } = methods.watch();
+  useEffect(() => {
+    setGeneratedUrl(
+      generateUrl({
+        url,
+        key,
+        width,
+        height,
+        scale,
+        quality,
+        fullPage,
+      })
+    );
+  }, [url, key, width, height, scale, quality, fullPage]);
 
   return (
     <div className="grid gap-8 border p-8">
@@ -121,11 +136,6 @@ export const UrlBuilderForm = () => {
             <InputField label="Full Page" id="fullPage" type="checkbox" />
           </div>
           <InputField label="API Key" id="key" type="text" />
-          <div className="mt-2">
-            <button className={styles.button} type="submit">
-              Generate Screenshot URL
-            </button>
-          </div>
         </form>
       </FormProvider>
 
