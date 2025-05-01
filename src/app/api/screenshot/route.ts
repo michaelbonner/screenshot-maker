@@ -99,13 +99,15 @@ export async function GET(request: Request) {
     );
   }
 
+  const screenshotType = validationResult.data.type || DEFAULT_TYPE;
+
   //   convert the base64 string to a buffer we can return as an image response
   const buffer = Buffer.from(screenshot, "base64");
   return new Response(buffer, {
     status: 200,
     headers: {
-      "Content-Type": `image/${type}`,
-      "Content-Disposition": `inline; filename="${url}.${type}"`,
+      "Content-Type": `image/${screenshotType}`,
+      "Content-Disposition": `inline; filename="${url}.${screenshotType}"`,
       "Content-Length": buffer.length.toString(),
       "Cache-Control": "public, max-age=3600",
     },
