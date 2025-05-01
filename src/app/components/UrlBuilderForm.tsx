@@ -80,35 +80,43 @@ export const UrlBuilderForm = () => {
           onSubmit={methods.handleSubmit(onSubmit)}
         >
           <InputField
-            label="URL"
             id="url"
-            type="text"
+            label="URL"
             placeholder="https://..."
+            type="text"
+            required
           />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <InputField
-              label="Width"
               id="width"
-              type="number"
+              label="Width"
+              min={1}
               placeholder={DEFAULT_WIDTH.toString()}
+              type="number"
             />
             <InputField
-              label="Height"
               id="height"
-              type="number"
+              label="Height"
+              min={1}
               placeholder={DEFAULT_HEIGHT.toString()}
+              type="number"
             />
             <InputField
-              label="Scale"
               id="scale"
-              type="number"
+              label="Scale"
+              max={1}
+              min={0.1}
               placeholder={DEFAULT_SCALE.toString()}
+              step={0.1}
+              type="number"
             />
             <InputField
-              label="Quality"
               id="quality"
-              type="number"
+              label="Quality"
+              max={100}
+              min={1}
               placeholder={DEFAULT_QUALITY.toString()}
+              type="number"
             />
             <InputField label="Full Page" id="fullPage" type="checkbox" />
           </div>
