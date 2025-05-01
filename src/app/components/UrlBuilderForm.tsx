@@ -158,7 +158,7 @@ export const UrlBuilderForm = () => {
             />
             <InputField label="Full Page" id="fullPage" type="checkbox" />
             <InputField
-              className="lg:col-span-2"
+              className="sm:col-span-2"
               label="API Key"
               id="key"
               type="text"
