@@ -256,9 +256,8 @@ const SelectField = ({
 
 const styles = {
   label: "block text-sm font-medium mb-2",
-  inputText: "block w-full border rounded-md p-2",
+  inputText: "block w-full border rounded-md p-2 appearance-none",
   checkbox:
-    "block size-10 appearance-none rounded-md border border-gray-300 checked:bg-indigo-500 checked:border-2",
-  button: "bg-indigo-500 text-white px-4 py-2 rounded-md cursor-pointer",
+    "inline-block my-1 size-8 appearance-none rounded-md border border-gray-300 ring-inset checked:bg-indigo-500 checked:border-2 checked:ring-3 checked:ring-white",
   error: "text-red-500 text-sm",
 };
