@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const DEFAULT_WIDTH = 1920;
-export const DEFAULT_HEIGHT = 1080;
+export const DEFAULT_WIDTH = 1512;
+export const DEFAULT_HEIGHT = 982;
 export const DEFAULT_SCALE = 0.25;
 export const DEFAULT_QUALITY = 50;
 export const DEFAULT_FULL_PAGE = false;

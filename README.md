@@ -6,15 +6,15 @@ The app uses puppeteer to load a browser and take a screenshot. This app can be 
 
 ## Example URL
 
-http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width=1920&height=1080&scale=0.25&quality=50
+http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width=1512&height=982&scale=0.25&quality=50
 
 ## Query Args
 
 | Name     | Type     | Default | Description                                                                                             |
 | -------- | -------- | ------- | ------------------------------------------------------------------------------------------------------- |
 | url      | string   |         | The URL of the page to screenshot.                                                                      |
-| width    | number?  | 1920    | The width of the viewport.                                                                              |
-| height   | number?  | 1080    | The height of the viewport.                                                                             |
+| width    | number?  | 1512    | The width of the viewport.                                                                              |
+| height   | number?  | 982     | The height of the viewport.                                                                             |
 | scale    | number?  | 0.25    | The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1. |
 | quality  | number?  | 50      | The quality of the screenshot. Between 1-100.                                                           |
 | fullPage | boolean? | false   | Whether to take a full page screenshot.                                                                 |

@@ -13,13 +13,13 @@ const args = [
     name: "width",
     type: "number?",
     description: "The width of the viewport",
-    default: 1920,
+    default: 1512,
   },
   {
     name: "height",
     type: "number?",
     description: "The height of the viewport",
-    default: 1080,
+    default: 982,
   },
   {
     name: "scale",
