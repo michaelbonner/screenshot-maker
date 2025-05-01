@@ -21,12 +21,12 @@ const args = [
     name: "scale",
     type: "number?",
     description:
-      "The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering.",
+      "The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1.",
   },
   {
     name: "quality",
     type: "number?",
-    description: "The quality of the screenshot",
+    description: "The quality of the screenshot. Between 1-100.",
   },
   {
     name: "fullPage",
