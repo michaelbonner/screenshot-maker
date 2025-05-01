@@ -40,6 +40,12 @@ const args = [
     description: "Whether to take a full page screenshot",
     default: false,
   },
+  {
+    name: "key",
+    type: "string?",
+    description: "The API key to use for the screenshot",
+    default: "",
+  },
 ];
 
 const url = "https://bootpackdigital.com";

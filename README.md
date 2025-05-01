@@ -18,6 +18,7 @@ http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width
 | scale    | number?  | 0.25    | The scale of the screenshot. Helpful to get a desktop screenshot, but scaled down for rendering. Max 1. |
 | quality  | number?  | 50      | The quality of the screenshot. Between 1-100.                                                           |
 | fullPage | boolean? | false   | Whether to take a full page screenshot.                                                                 |
+| key      | string?  |         | The API key to use for the screenshot.                                                                  |
 
 ## Getting Started
 
