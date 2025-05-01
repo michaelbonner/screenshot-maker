@@ -41,6 +41,9 @@ const args = [
   },
 ];
 
+const exampleUrl = new URL("http://localhost:3000/api/screenshot");
+exampleUrl.searchParams.append("url", "https://bootpackdigital.com");
+
 export default function Home() {
   return (
     <div className="grid gap-24 min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -53,16 +56,10 @@ export default function Home() {
               <code className="block text-sm border rounded-md p-4">
                 <Link
                   className="underline underline-offset-4"
-                  href="http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width=1920&height=1080&scale=0.25&quality=50"
+                  href={exampleUrl.toString()}
                   target="_blank"
                 >
-                  http://localhost:3000/api/screenshot?url=https%3A%2F%2Fbootpackdigital.com&width=1920
-                  <wbr />
-                  &height=1080
-                  <wbr />
-                  &scale=0.25
-                  <wbr />
-                  &quality=50
+                  {exampleUrl.toString()}
                 </Link>
               </code>
             </div>
@@ -74,6 +71,7 @@ export default function Home() {
                 <tr>
                   <th>Name</th>
                   <th>Type</th>
+                  <th>Default</th>
                   <th>Description</th>
                 </tr>
               </thead>
@@ -83,6 +81,9 @@ export default function Home() {
                     <td>{arg.name}</td>
                     <td>
                       <code>{arg.type}</code>
+                    </td>
+                    <td>
+                      <code>{arg.default.toString()}</code>
                     </td>
                     <td>{arg.description}</td>
                   </tr>
