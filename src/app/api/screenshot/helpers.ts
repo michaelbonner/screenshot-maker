@@ -62,7 +62,6 @@ export async function getScreenshotAsBase64(
           },
       optimizeForSpeed: true,
       fullPage,
-      ...options,
     });
   } catch (error) {
     console.error("Error accessing page:", error);
