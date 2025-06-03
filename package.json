@@ -14,11 +14,11 @@
     "@hookform/resolvers": "^5.0.1",
     "@sparticuz/chromium-min": "^133.0.0",
     "next": "^15.3.3",
-    "puppeteer-core": "^24.9.0",
+    "puppeteer-core": "^24.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
-    "zod": "^3.25.46"
+    "zod": "^3.25.49"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
