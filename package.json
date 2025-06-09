@@ -11,7 +11,7 @@
     "up": "bunx update"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.1.0",
+    "@hookform/resolvers": "^5.1.1",
     "@sparticuz/chromium-min": "^133.0.0",
     "next": "^15.3.3",
     "puppeteer-core": "^24.10.0",
@@ -24,7 +24,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "^22.15.30",
-    "@types/react": "^19.1.6",
+    "@types/react": "^19.1.7",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.28.0",
     "eslint-config-next": "^15.3.3",
