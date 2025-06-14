@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "out": "bun outdated",
-    "up": "bunx update"
+    "up": "bun update",
+    "preinstall": "npx only-allow bun"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
