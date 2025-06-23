@@ -14,21 +14,21 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@sparticuz/chromium-min": "^137.0.1",
-    "next": "^15.3.3",
-    "puppeteer-core": "^24.10.1",
+    "next": "^15.3.4",
+    "puppeteer-core": "^24.10.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-hook-form": "^7.57.0",
-    "zod": "^3.25.64"
+    "react-hook-form": "^7.58.1",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.10",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.29.0",
-    "eslint-config-next": "^15.3.3",
+    "eslint-config-next": "^15.3.4",
     "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3"
   },
