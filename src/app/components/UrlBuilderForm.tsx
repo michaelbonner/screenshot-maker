@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   FormProvider,
+  Resolver,
   SubmitHandler,
   useForm,
   useFormContext,
@@ -46,7 +47,7 @@ export const UrlBuilderForm = () => {
       url: defaultUrl,
     },
     mode: "onChange",
-    resolver: zodResolver(inputSchema),
+    resolver: zodResolver(inputSchema) as Resolver<Inputs>,
   });
 
   const generateUrl = (data: Inputs) => {

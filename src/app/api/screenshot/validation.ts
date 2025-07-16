@@ -8,7 +8,7 @@ export const DEFAULT_FULL_PAGE = false;
 export const DEFAULT_TYPE = "webp";
 
 export const inputSchema = z.object({
-  url: z.string().url(),
+  url: z.url(),
   width: z.union([z.coerce.number().min(1), z.literal("")]).optional(),
   height: z.union([z.coerce.number().min(1), z.literal("")]).optional(),
   scale: z.union([z.coerce.number().min(0.1).max(1), z.literal("")]).optional(),
