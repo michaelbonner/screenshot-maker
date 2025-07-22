@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
-    "@sparticuz/chromium-min": "^138.0.1",
-    "next": "^15.4.1",
+    "@sparticuz/chromium-min": "^138.0.2",
+    "next": "^15.4.3",
     "puppeteer-core": "^24.14.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -24,11 +24,11 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.11",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.31.0",
-    "eslint-config-next": "^15.4.1",
+    "eslint-config-next": "^15.4.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   },
