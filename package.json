@@ -12,23 +12,23 @@
     "preinstall": "npx only-allow bun"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.1.1",
+    "@hookform/resolvers": "^5.2.1",
     "@sparticuz/chromium-min": "^138.0.2",
-    "next": "^15.4.3",
+    "next": "^15.4.5",
     "puppeteer-core": "^24.15.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-hook-form": "^7.61.0",
-    "zod": "^4.0.7"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hook-form": "^7.61.1",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^24.1.0",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "eslint": "^9.31.0",
-    "eslint-config-next": "^15.4.3",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "eslint": "^9.32.0",
+    "eslint-config-next": "^15.4.5",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   },
