@@ -18,7 +18,7 @@
     "puppeteer-core": "^24.15.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-hook-form": "^7.61.1",
+    "react-hook-form": "^7.62.0",
     "zod": "^4.0.14"
   },
   "devDependencies": {
