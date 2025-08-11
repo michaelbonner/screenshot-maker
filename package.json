@@ -15,7 +15,7 @@
     "@hookform/resolvers": "^5.2.1",
     "@sparticuz/chromium-min": "^138.0.2",
     "next": "^15.4.6",
-    "puppeteer-core": "^24.16.0",
+    "puppeteer-core": "^24.16.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
