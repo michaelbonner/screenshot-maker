@@ -14,22 +14,22 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
     "@sparticuz/chromium-min": "^138.0.2",
-    "next": "^15.4.6",
-    "puppeteer-core": "^24.16.1",
+    "next": "^15.5.0",
+    "puppeteer-core": "^24.17.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
-    "zod": "^4.0.17"
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@tailwindcss/postcss": "^4.1.11",
-    "@types/node": "^24.2.1",
-    "@types/react": "^19.1.10",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7",
-    "eslint": "^9.33.0",
-    "eslint-config-next": "^15.4.6",
-    "tailwindcss": "^4.1.11",
+    "eslint": "^9.34.0",
+    "eslint-config-next": "^15.5.0",
+    "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2"
   },
   "cspell": {
