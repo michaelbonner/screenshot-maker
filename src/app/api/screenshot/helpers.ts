@@ -2,14 +2,6 @@ import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/he
 import puppeteer, { ScreenshotOptions } from "puppeteer-core";
 
 async function getBrowser(defaultViewport: { width: number; height: number }) {
-  if (process.env.CHROMIUM_EXECUTABLE_PATH) {
-    return await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
-      defaultViewport,
-    });
-  }
-
   return await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
     channel: "chrome",
