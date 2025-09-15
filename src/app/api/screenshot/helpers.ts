@@ -1,31 +1,13 @@
-import chromium from "@sparticuz/chromium-min";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import puppeteer, { Browser, ScreenshotOptions } from "puppeteer-core";
-
-const CHROMIUM_VERSION = "v133.0.0";
-
-const remoteExecutablePath = `https://github.com/Sparticuz/chromium/releases/download/${CHROMIUM_VERSION}/chromium-${CHROMIUM_VERSION}-pack.tar`;
-
-let browser: Browser | null = null;
+import puppeteer, { ScreenshotOptions } from "puppeteer-core";
 
 async function getBrowser(defaultViewport: { width: number; height: number }) {
-  if (browser) return browser;
-
-  if (process.env.NODE_ENV === "production") {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(remoteExecutablePath),
-      headless: true,
-    });
-  } else {
-    browser = await puppeteer.launch({
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      headless: true,
-      channel: "chrome",
-      defaultViewport,
-    });
-  }
-  return browser;
+  return await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    headless: true,
+    channel: "chrome",
+    defaultViewport,
+  });
 }
 
 export async function getScreenshotAsBase64(
