@@ -4,8 +4,6 @@ import puppeteer, { ScreenshotOptions } from "puppeteer-core";
 async function getBrowser(defaultViewport: { width: number; height: number }) {
   return await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    headless: true,
-    channel: "chrome",
     defaultViewport,
   });
 }
