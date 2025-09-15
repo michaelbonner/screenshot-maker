@@ -4,7 +4,7 @@ import puppeteer, { Browser, ScreenshotOptions } from "puppeteer-core";
 
 const CHROMIUM_VERSION = "v138.0.2";
 
-const remoteExecutablePath = `https://github.com/Sparticuz/chromium/releases/download/${CHROMIUM_VERSION}/chromium-${CHROMIUM_VERSION}-pack.tar`;
+const remoteExecutablePath = `https://github.com/Sparticuz/chromium/releases/download/${CHROMIUM_VERSION}/chromium-${CHROMIUM_VERSION}-pack.x64.tar`;
 
 let browser: Browser | null = null;
 
