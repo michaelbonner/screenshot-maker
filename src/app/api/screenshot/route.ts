@@ -10,7 +10,6 @@ import {
   DEFAULT_WIDTH,
   inputSchema,
 } from "./validation";
-import { ScreenshotOptions } from "puppeteer-core";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -52,7 +51,7 @@ export async function GET(request: Request) {
       scale: number,
       quality: number,
       fullPage: boolean,
-      type: ScreenshotOptions["type"]
+      type: "png" | "jpeg"
     ) =>
       getScreenshotAsBase64(url, {
         width: width || DEFAULT_WIDTH,

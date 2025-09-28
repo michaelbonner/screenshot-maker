@@ -2,7 +2,7 @@
 
 Sometimes you just need to generate a few screenshots. Maybe you're visually comparing dev changes, maybe you want to put screenshots on another website. This project makes generating screenshots easier.
 
-The app uses puppeteer to load a browser and take a screenshot. This app can be run on Vercel.
+The app uses playwright to load a browser and take a screenshot. This app can be run on Vercel.
 
 ## Example URL
 

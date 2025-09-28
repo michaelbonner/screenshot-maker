@@ -48,9 +48,9 @@ const args = [
   },
   {
     name: "type",
-    type: '("png" | "jpeg" | "webp")?',
+    type: '("png" | "jpeg")?',
     description: "The type of the screenshot",
-    default: "webp",
+    default: "png",
   },
 ];
 
