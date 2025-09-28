@@ -16,6 +16,7 @@ async function getBrowser(defaultViewport: { width: number; height: number }) {
       args: chromium.args,
       executablePath: await chromium.executablePath(remoteExecutablePath),
       headless: true,
+      defaultViewport,
     });
   } else {
     browser = await puppeteer.launch({
@@ -45,8 +46,7 @@ export async function getScreenshotAsBase64(
     });
     const page = await browser.newPage();
     await page.setViewport({ width, height });
-    await page.goto(url, { waitUntil: "networkidle2" });
-    await new Promise((r) => setTimeout(r, 2000));
+    await page.goto(url, { waitUntil: "networkidle2", timeout: 10000 });
     return page.screenshot({
       encoding: "base64",
       type,
