@@ -14,7 +14,9 @@ async function getBrowser(defaultViewport: { width: number; height: number }) {
   if (process.env.NODE_ENV === "production") {
     browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath(remoteExecutablePath),
+      executablePath:
+        process.env.CHROMIUM_EXECUTABLE_PATH ||
+        (await chromium.executablePath(remoteExecutablePath)),
       headless: true,
       defaultViewport,
     });
