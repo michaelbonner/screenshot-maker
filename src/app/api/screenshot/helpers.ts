@@ -1,5 +1,6 @@
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import { chromium, Browser } from "playwright";
+import { chromium } from "playwright";
+import sharp from "sharp";
 
 async function getBrowser() {
   if (process.env.NODE_ENV === "production") {
@@ -43,8 +44,6 @@ export async function getScreenshotAsBase64(
     await page.setViewportSize({ width, height });
     await page.goto(url, { waitUntil: "load", timeout: 10000 });
 
-    console.log("type", type);
-
     const screenshotOptions: {
       format: "png" | "jpeg";
       quality?: number;
@@ -55,20 +54,56 @@ export async function getScreenshotAsBase64(
       fullPage,
     };
 
-    if (!fullPage && scale !== 1) {
-      // Set the viewport to the scaled size
-      await page.setViewportSize({
-        width: Math.round(width * scale),
-        height: Math.round(height * scale),
-      });
+    const screenshotBuffer = await page.screenshot(screenshotOptions);
+
+    if (scale !== 1) {
+      const resizedBuffer = await resizeImage(
+        screenshotBuffer,
+        scale,
+        type,
+        quality
+      );
+      return resizedBuffer.toString("base64");
     }
 
-    const screenshotBuffer = await page.screenshot(screenshotOptions);
     return screenshotBuffer.toString("base64");
   } catch (error) {
     console.error("Error accessing page:", error);
     return false;
   }
+}
+
+async function resizeImage(
+  imageBuffer: Buffer,
+  scale: number,
+  type: "png" | "jpeg",
+  quality: number
+): Promise<Buffer> {
+  const sharpInstance = sharp(imageBuffer);
+
+  // Get original dimensions
+  const metadata = await sharpInstance.metadata();
+  const originalWidth = metadata.width || 0;
+  const originalHeight = metadata.height || 0;
+
+  // Calculate new dimensions
+  const newWidth = Math.round(originalWidth * scale);
+  const newHeight = Math.round(originalHeight * scale);
+
+  // Resize with high-quality algorithm
+  let resized = sharpInstance.resize(newWidth, newHeight, {
+    kernel: sharp.kernel.lanczos3, // High-quality resampling
+    withoutEnlargement: false, // Allow enlarging if scale > 1
+  });
+
+  // Apply format-specific options
+  if (type === "jpeg") {
+    resized = resized.jpeg({ quality });
+  } else {
+    resized = resized.png();
+  }
+
+  return await resized.toBuffer();
 }
 
 export const checkAuth = (headersList: ReadonlyHeaders, key: string | null) => {
