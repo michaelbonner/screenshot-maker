@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       scale: number,
       quality: number,
       fullPage: boolean,
-      type: "png" | "jpeg"
+      type: "png" | "jpeg" | "webp" | "avif"
     ) =>
       getScreenshotAsBase64(url, {
         width: width || DEFAULT_WIDTH,

@@ -146,6 +146,8 @@ export const UrlBuilderForm = () => {
               options={[
                 { label: "PNG", value: "png" },
                 { label: "JPEG", value: "jpeg" },
+                { label: "WebP", value: "webp" },
+                { label: "AVIF", value: "avif" },
               ]}
             />
             <InputField

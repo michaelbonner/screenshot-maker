@@ -33,7 +33,7 @@ export async function getScreenshotAsBase64(
     scale: number;
     quality: number;
     fullPage: boolean;
-    type: "png" | "jpeg";
+    type: "png" | "jpeg" | "webp" | "avif";
   }
 ) {
   const { width, height, scale, quality, fullPage, type } = options;
@@ -45,20 +45,28 @@ export async function getScreenshotAsBase64(
     await page.goto(url, { waitUntil: "load", timeout: 10000 });
 
     const screenshotOptions: {
-      format: "png" | "jpeg";
-      quality?: number;
+      format: "png";
       fullPage: boolean;
     } = {
-      format: type,
-      quality: type !== "png" ? quality : undefined,
+      format: "png",
       fullPage,
     };
 
     const screenshotBuffer = await page.screenshot(screenshotOptions);
 
+    // If the requested type is not PNG, convert it using Sharp
+    let processedBuffer = screenshotBuffer;
+    if (type !== "png") {
+      processedBuffer = await convertImageFormat(
+        screenshotBuffer,
+        type,
+        quality
+      );
+    }
+
     if (scale !== 1) {
       const resizedBuffer = await resizeImage(
-        screenshotBuffer,
+        processedBuffer,
         scale,
         type,
         quality
@@ -66,17 +74,36 @@ export async function getScreenshotAsBase64(
       return resizedBuffer.toString("base64");
     }
 
-    return screenshotBuffer.toString("base64");
+    return processedBuffer.toString("base64");
   } catch (error) {
     console.error("Error accessing page:", error);
     return false;
   }
 }
 
+async function convertImageFormat(
+  imageBuffer: Buffer,
+  targetType: "jpeg" | "webp" | "avif",
+  quality: number
+): Promise<Buffer> {
+  const sharpInstance = sharp(imageBuffer);
+
+  switch (targetType) {
+    case "jpeg":
+      return await sharpInstance.jpeg({ quality }).toBuffer();
+    case "webp":
+      return await sharpInstance.webp({ quality }).toBuffer();
+    case "avif":
+      return await sharpInstance.avif({ quality }).toBuffer();
+    default:
+      return imageBuffer;
+  }
+}
+
 async function resizeImage(
   imageBuffer: Buffer,
   scale: number,
-  type: "png" | "jpeg",
+  type: "png" | "jpeg" | "webp" | "avif",
   quality: number
 ): Promise<Buffer> {
   const sharpInstance = sharp(imageBuffer);
@@ -99,6 +126,10 @@ async function resizeImage(
   // Apply format-specific options
   if (type === "jpeg") {
     resized = resized.jpeg({ quality });
+  } else if (type === "webp") {
+    resized = resized.webp({ quality });
+  } else if (type === "avif") {
+    resized = resized.avif({ quality });
   } else {
     resized = resized.png();
   }

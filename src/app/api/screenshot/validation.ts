@@ -17,5 +17,5 @@ export const inputSchema = z.object({
     .optional(),
   fullPage: z.coerce.boolean().optional(),
   key: z.string().optional(),
-  type: z.enum(["png", "jpeg"]).optional(),
+  type: z.enum(["png", "jpeg", "webp", "avif"]).optional(),
 });

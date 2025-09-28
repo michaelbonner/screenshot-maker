@@ -48,7 +48,7 @@ const args = [
   },
   {
     name: "type",
-    type: '("png" | "jpeg")?',
+    type: '("png" | "jpeg" | "webp" | "avif")?',
     description: "The type of the screenshot",
     default: "png",
   },
