@@ -5,7 +5,7 @@ export const DEFAULT_HEIGHT = 982;
 export const DEFAULT_SCALE = 0.25;
 export const DEFAULT_QUALITY = 50;
 export const DEFAULT_FULL_PAGE = false;
-export const DEFAULT_TYPE = "webp";
+export const DEFAULT_TYPE = "png";
 
 export const inputSchema = z.object({
   url: z.url(),
@@ -17,5 +17,5 @@ export const inputSchema = z.object({
     .optional(),
   fullPage: z.coerce.boolean().optional(),
   key: z.string().optional(),
-  type: z.enum(["webp", "png", "jpeg"]).optional(),
+  type: z.enum(["png", "jpeg"]).optional(),
 });

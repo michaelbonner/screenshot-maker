@@ -144,7 +144,6 @@ export const UrlBuilderForm = () => {
               label="Type"
               placeholder={DEFAULT_TYPE}
               options={[
-                { label: "WebP", value: "webp" },
                 { label: "PNG", value: "png" },
                 { label: "JPEG", value: "jpeg" },
               ]}

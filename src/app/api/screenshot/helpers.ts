@@ -1,34 +1,27 @@
-import chromium from "@sparticuz/chromium-min";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import puppeteer, { Browser, ScreenshotOptions } from "puppeteer-core";
+import { chromium, Browser } from "playwright";
 
-const CHROMIUM_VERSION = "v138.0.2";
-
-const remoteExecutablePath = `https://github.com/Sparticuz/chromium/releases/download/${CHROMIUM_VERSION}/chromium-${CHROMIUM_VERSION}-pack.x64.tar`;
-
-let browser: Browser | null = null;
-
-async function getBrowser(defaultViewport: { width: number; height: number }) {
-  if (browser) return browser;
-
+async function getBrowser() {
   if (process.env.NODE_ENV === "production") {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath:
-        process.env.CHROMIUM_EXECUTABLE_PATH ||
-        (await chromium.executablePath(remoteExecutablePath)),
+    return await chromium.launch({
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--no-zygote",
+        "--single-process",
+        "--disable-gpu",
+      ],
       headless: true,
-      defaultViewport,
     });
   } else {
-    browser = await puppeteer.launch({
+    return await chromium.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       headless: true,
-      channel: "chrome",
-      defaultViewport,
     });
   }
-  return browser;
 }
 
 export async function getScreenshotAsBase64(
@@ -37,34 +30,41 @@ export async function getScreenshotAsBase64(
     width: number;
     height: number;
     scale: number;
-  } & ScreenshotOptions
+    quality: number;
+    fullPage: boolean;
+    type: "png" | "jpeg";
+  }
 ) {
   const { width, height, scale, quality, fullPage, type } = options;
 
   try {
-    const browser = await getBrowser({
-      width,
-      height,
-    });
+    const browser = await getBrowser();
     const page = await browser.newPage();
-    await page.setViewport({ width, height });
-    await page.goto(url, { waitUntil: "networkidle2", timeout: 10000 });
-    return page.screenshot({
-      encoding: "base64",
-      type,
+    await page.setViewportSize({ width, height });
+    await page.goto(url, { waitUntil: "load", timeout: 10000 });
+
+    console.log("type", type);
+
+    const screenshotOptions: {
+      format: "png" | "jpeg";
+      quality?: number;
+      fullPage: boolean;
+    } = {
+      format: type,
       quality: type !== "png" ? quality : undefined,
-      clip: fullPage
-        ? undefined
-        : {
-            scale,
-            x: 0,
-            y: 0,
-            width,
-            height,
-          },
-      optimizeForSpeed: true,
       fullPage,
-    });
+    };
+
+    if (!fullPage && scale !== 1) {
+      // Set the viewport to the scaled size
+      await page.setViewportSize({
+        width: Math.round(width * scale),
+        height: Math.round(height * scale),
+      });
+    }
+
+    const screenshotBuffer = await page.screenshot(screenshotOptions);
+    return screenshotBuffer.toString("base64");
   } catch (error) {
     console.error("Error accessing page:", error);
     return false;

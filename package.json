@@ -13,9 +13,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@sparticuz/chromium-min": "^138.0.2",
     "next": "^15.5.4",
-    "puppeteer-core": "^24.22.3",
+    "playwright": "^1.48.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",
