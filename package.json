@@ -10,7 +10,7 @@
     "out": "bun outdated",
     "up": "bun update",
     "preinstall": "npx only-allow bun",
-    "postinstall": "bunx playwright install chrome --with-deps"
+    "postinstall": "bunx playwright install chromium --with-deps"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
