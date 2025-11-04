@@ -81,8 +81,11 @@ export const UrlBuilderForm = () => {
     setGeneratedUrl(generateUrl(data));
   };
 
+  /* eslint-disable react-hooks/incompatible-library */
   const { url, key, width, height, scale, quality, fullPage, type } =
     methods.watch();
+  /* eslint-enable react-hooks/incompatible-library */
+
   useEffect(() => {
     setGeneratedUrl(
       generateUrl({
