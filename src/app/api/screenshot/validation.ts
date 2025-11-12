@@ -5,7 +5,7 @@ export const DEFAULT_HEIGHT = 982;
 export const DEFAULT_SCALE = 0.25;
 export const DEFAULT_QUALITY = 50;
 export const DEFAULT_FULL_PAGE = false;
-export const DEFAULT_TYPE = "png";
+export const DEFAULT_TYPE = "webp";
 
 export const inputSchema = z.object({
   url: z.url(),
