@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "next": "^16.1.0",
+    "next": "^16.1.1",
     "playwright": "^1.57.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-hook-form": "^7.68.0",
+    "react-hook-form": "^7.69.0",
     "sharp": "^0.34.5",
     "zod": "^4.2.1"
   },
@@ -28,7 +28,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.0",
+    "eslint-config-next": "^16.1.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   },
