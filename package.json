@@ -20,7 +20,7 @@
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.69.0",
     "sharp": "^0.34.5",
-    "zod": "^4.2.1"
+    "zod": "^4.3.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
