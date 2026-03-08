@@ -29,6 +29,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <script
+          async
+          src="https://easycustomerfeedback.com/widget/c7ed6cd8dc304e1c94c3a1abeae633c2/embed"
+          data-label="Send feedback"
+          data-position="right"
+          data-color="#111827"
+        />
       </body>
     </html>
   );
