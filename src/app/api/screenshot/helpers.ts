@@ -1,6 +1,9 @@
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
-import { chromium } from "playwright";
+import { Browser, Page, chromium } from "playwright";
 import sharp from "sharp";
+
+const NAVIGATION_TIMEOUT_MS = 30000;
+const PAGE_SETTLE_TIMEOUT_MS = 5000;
 
 async function getBrowser() {
   if (process.env.NODE_ENV === "production") {
@@ -37,12 +40,24 @@ export async function getScreenshotAsBase64(
   }
 ) {
   const { width, height, scale, quality, fullPage, type } = options;
+  let browser: Browser | undefined;
+  let page: Page | undefined;
 
   try {
-    const browser = await getBrowser();
-    const page = await browser.newPage();
+    browser = await getBrowser();
+    page = await browser.newPage();
+    page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
     await page.setViewportSize({ width, height });
-    await page.goto(url, { waitUntil: "load", timeout: 10000 });
+    await page.goto(url, {
+      waitUntil: "domcontentloaded",
+      timeout: NAVIGATION_TIMEOUT_MS,
+    });
+
+    // Some sites keep long-lived requests open; let the page settle briefly,
+    // but do not fail the screenshot if "networkidle" is never reached.
+    await page
+      .waitForLoadState("networkidle", { timeout: PAGE_SETTLE_TIMEOUT_MS })
+      .catch(() => undefined);
 
     const screenshotOptions: {
       format: "png";
@@ -78,6 +93,9 @@ export async function getScreenshotAsBase64(
   } catch (error) {
     console.error("Error accessing page:", error);
     return false;
+  } finally {
+    await page?.close().catch(() => undefined);
+    await browser?.close().catch(() => undefined);
   }
 }
 
