@@ -16,8 +16,14 @@
 # Playwright resolves its browser through its own package layout at runtime, so
 # the image keeps a real node_modules and runs `next start`. Chromium dominates
 # the image size either way.
+#
+# Both Node stages resolve one ARG so they cannot drift apart, and so there is
+# a single place to pin a digest.
 # =====================================================================
-FROM oven/bun:1 AS dependencies
+ARG BUN_IMAGE=oven/bun:1
+ARG NODE_IMAGE=node:22-slim
+
+FROM ${BUN_IMAGE} AS dependencies
 WORKDIR /app
 
 # --ignore-scripts deliberately skips this repo's postinstall
@@ -27,7 +33,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --ignore-scripts
 
-FROM node:22-slim AS build
+FROM ${NODE_IMAGE} AS build
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
@@ -39,7 +45,7 @@ RUN npm run build
 # =====================================================================
 # Runtime
 # =====================================================================
-FROM node:22-slim AS runtime
+FROM ${NODE_IMAGE} AS runtime
 WORKDIR /app
 
 ENV NODE_ENV=production \
@@ -59,7 +65,13 @@ COPY --from=build /app/next.config.ts ./next.config.ts
 # out of sync the next time playwright is bumped. --with-deps pulls the shared
 # libraries headless Chromium needs on a slim base.
 RUN npx --yes playwright install --with-deps chromium \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && chown -R node:node /app /ms-playwright
+
+# Root was only needed for the apt install above. Chromium is launched with
+# --no-sandbox (see src/app/api/screenshot/helpers.ts), which is what lets it
+# run unprivileged here.
+USER node
 
 EXPOSE 3000
 
