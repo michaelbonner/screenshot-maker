@@ -85,8 +85,14 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.image }}:latest
             ${{ steps.meta.outputs.image }}:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # GHCR keeps the cache across quiet periods. The Actions cache used
+          # here previously expires after inactivity and made the next deploy
+          # re-upload the large Chromium layers. Keep it as a migration source
+          # until the registry cache has been populated by the first run.
+          cache-from: |
+            type=registry,ref=${{ steps.meta.outputs.image }}:buildcache
+            type=gha
+          cache-to: type=registry,ref=${{ steps.meta.outputs.image }}:buildcache,mode=max
 
       # The non-empty check above cannot tell whether the token still WORKS. An
       # expired or revoked one would sail past it, and then saveDockerProvider

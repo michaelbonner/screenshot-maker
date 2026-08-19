@@ -43,9 +43,9 @@ COPY . .
 RUN npm run build
 
 # =====================================================================
-# Runtime
+# Browser runtime base
 # =====================================================================
-FROM ${NODE_IMAGE} AS runtime
+FROM ${NODE_IMAGE} AS browser
 WORKDIR /app
 
 ENV NODE_ENV=production \
@@ -54,19 +54,26 @@ ENV NODE_ENV=production \
     PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 COPY --from=dependencies /app/node_modules ./node_modules
+
+# Install the Chromium build that matches the Playwright version resolved in
+# bun.lock, rather than pinning a browser image tag that would silently drift
+# out of sync the next time playwright is bumped. --with-deps pulls the shared
+# libraries headless Chromium needs on a slim base. This stage deliberately has
+# no build output: application-only changes can reuse the large browser layer.
+RUN npx --yes playwright install --with-deps chromium \
+    && rm -rf /var/lib/apt/lists/* \
+    && chown -R node:node /app /ms-playwright
+
+# =====================================================================
+# Runtime
+# =====================================================================
+FROM browser AS runtime
+
 COPY --from=build /app/.next ./.next
 # No `public/` here: the directory exists locally but is untracked, so it does
 # not exist in a clean checkout and a COPY of it fails the build in CI.
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.ts ./next.config.ts
-
-# Install the Chromium build that matches the Playwright version resolved in
-# bun.lock, rather than pinning a browser image tag that would silently drift
-# out of sync the next time playwright is bumped. --with-deps pulls the shared
-# libraries headless Chromium needs on a slim base.
-RUN npx --yes playwright install --with-deps chromium \
-    && rm -rf /var/lib/apt/lists/* \
-    && chown -R node:node /app /ms-playwright
 
 # Root was only needed for the apt install above. Chromium is launched with
 # --no-sandbox (see src/app/api/screenshot/helpers.ts), which is what lets it
