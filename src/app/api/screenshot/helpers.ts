@@ -4,6 +4,7 @@ import sharp from "sharp";
 
 const NAVIGATION_TIMEOUT_MS = 30000;
 const PAGE_SETTLE_TIMEOUT_MS = 5000;
+const FONT_LOAD_TIMEOUT_MS = 10000;
 
 async function getBrowser() {
   if (process.env.NODE_ENV === "production") {
@@ -58,6 +59,17 @@ export async function getScreenshotAsBase64(
     await page
       .waitForLoadState("networkidle", { timeout: PAGE_SETTLE_TIMEOUT_MS })
       .catch(() => undefined);
+
+    // Font requests can still be in flight when a page never reaches
+    // networkidle (for example, because of analytics or long polling). Wait
+    // for the fonts used by the document before capturing, while keeping the
+    // screenshot endpoint bounded when a font host is unavailable.
+    await page.evaluate(async (timeoutMs) => {
+      await Promise.race([
+        document.fonts.ready,
+        new Promise<void>((resolve) => setTimeout(resolve, timeoutMs)),
+      ]);
+    }, FONT_LOAD_TIMEOUT_MS);
 
     const screenshotOptions: {
       format: "png";
