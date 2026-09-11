@@ -13,9 +13,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://screenshot-maker.bootpack.dev";
+const title = "Screenshot Maker";
+const description = "Screenshot any URL with a single API call.";
+
+// opengraph-image.png / twitter-image.png / icon.svg / apple-icon.png sit
+// alongside this file, so Next wires the tags up from the file conventions.
+// metadataBase is what turns those into the absolute URLs crawlers need.
 export const metadata: Metadata = {
-  title: "Screenshot Maker",
-  description: "Make screenshots of your website",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: title,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({

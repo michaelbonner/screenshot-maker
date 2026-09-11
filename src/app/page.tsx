@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./components/Logo";
 import { UrlBuilderForm } from "./components/UrlBuilderForm";
 
 const args = [
@@ -64,7 +65,10 @@ export default function Home() {
   return (
     <div className="grid gap-24 min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="w-full max-w-7xl mx-auto grid gap-12 lg:gap-24">
-        <h1 className="text-4xl lg:text-6xl font-bold">Screenshot Maker</h1>
+        <div className="flex items-center gap-4 lg:gap-6">
+          <Logo className="shrink-0 size-12 lg:size-20 text-indigo-600 dark:text-indigo-400" />
+          <h1 className="text-4xl lg:text-6xl font-bold">Screenshot Maker</h1>
+        </div>
         <div className="w-full grid gap-8 lg:gap-16 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-4 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2">
           <div>
             <h2>Basic Example</h2>
