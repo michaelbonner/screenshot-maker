@@ -70,8 +70,10 @@ RUN npx --yes playwright install --with-deps chromium \
 FROM browser AS runtime
 
 COPY --from=build /app/.next ./.next
-# No `public/` here: the directory exists locally but is untracked, so it does
-# not exist in a clean checkout and a COPY of it fails the build in CI.
+# `public/` now holds the tracked logo. Metadata assets (icon.svg, apple-icon,
+# the social card) live under src/app/ and are already baked into .next, so this
+# is only for genuinely static files served from the web root.
+COPY --from=build /app/public ./public
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.ts ./next.config.ts
 
