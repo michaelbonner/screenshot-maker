@@ -102,7 +102,7 @@ export const UrlBuilderForm = () => {
   }, [url, key, width, height, scale, quality, fullPage, type]);
 
   return (
-    <div className="grid gap-8 border p-8">
+    <div className="grid gap-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-900/[.04] sm:p-8">
       <FormProvider {...methods}>
         <form
           method="GET"
@@ -173,12 +173,12 @@ export const UrlBuilderForm = () => {
         </form>
       </FormProvider>
 
-      <div>
-        <h3>Generated URL</h3>
-        <div>
-          <code>
+      <div className="rounded-2xl bg-slate-950 p-5 text-slate-100">
+        <h3 className="text-sm font-semibold text-white">Generated URL</h3>
+        <div className="mt-3">
+          <code className="text-xs leading-6 sm:text-sm">
             <Link
-              className="underline underline-offset-4 break-all"
+              className="break-all text-indigo-200 underline decoration-indigo-400/50 underline-offset-4 transition hover:text-white"
               href={generatedUrl}
               target="_blank"
             >
@@ -260,9 +260,10 @@ const SelectField = ({
 };
 
 const styles = {
-  label: "block text-sm font-medium mb-2",
-  inputText: "block w-full border rounded-md p-2 appearance-none",
+  label: "mb-2 block text-sm font-medium text-slate-700",
+  inputText:
+    "block w-full appearance-none rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10",
   checkbox:
-    "inline-block my-1 size-8 appearance-none rounded-md border border-gray-300 ring-inset checked:bg-indigo-500 checked:border-2 checked:ring-3 checked:ring-white",
-  error: "text-red-500 text-sm",
+    "my-1 inline-block size-7 appearance-none rounded-lg border border-slate-300 bg-white transition checked:border-indigo-600 checked:bg-indigo-600 checked:ring-4 checked:ring-indigo-500/15",
+  error: "mt-1 block text-sm text-red-600",
 };
