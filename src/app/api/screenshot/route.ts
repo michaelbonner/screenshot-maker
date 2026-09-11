@@ -18,11 +18,6 @@ export async function GET(request: Request) {
   const { url, width, height, scale, key, quality, fullPage, type } =
     Object.fromEntries(searchParams.entries());
 
-  // check key or host is valid
-  if (!checkAuth(headersList, key)) {
-    return Response.json({ message: `Unauthorized` }, { status: 401 });
-  }
-
   const validationResult = inputSchema.safeParse({
     url,
     width,
@@ -41,6 +36,12 @@ export async function GET(request: Request) {
       },
       { status: 400 }
     );
+  }
+
+  // Bootpack Digital is a public screenshot target. Other URLs still require
+  // an API key, an allowed referrer, or the global development bypass.
+  if (!checkAuth(headersList, key, validationResult.data.url)) {
+    return Response.json({ message: `Unauthorized` }, { status: 401 });
   }
 
   const getCachedScreenshot = unstable_cache(

@@ -5,6 +5,7 @@ import sharp from "sharp";
 const NAVIGATION_TIMEOUT_MS = 30000;
 const PAGE_SETTLE_TIMEOUT_MS = 5000;
 const FONT_LOAD_TIMEOUT_MS = 10000;
+const PUBLIC_SCREENSHOT_HOSTS = new Set(["bootpackdigital.com"]);
 
 async function getBrowser() {
   if (process.env.NODE_ENV === "production") {
@@ -167,7 +168,13 @@ async function resizeImage(
   return await resized.toBuffer();
 }
 
-export const checkAuth = (headersList: ReadonlyHeaders, key: string | null) => {
+export const checkAuth = (
+  headersList: ReadonlyHeaders,
+  key: string | null,
+  targetUrl?: string
+) => {
+  if (targetUrl && isPublicScreenshotUrl(targetUrl)) return true;
+
   if (process.env.BYPASS_AUTH_CHECK === "true") return true;
 
   if (isValidKey(key)) return true;
@@ -175,6 +182,14 @@ export const checkAuth = (headersList: ReadonlyHeaders, key: string | null) => {
   if (isValidOrigin(headersList)) return true;
 
   return false;
+};
+
+export const isPublicScreenshotUrl = (targetUrl: string) => {
+  try {
+    return PUBLIC_SCREENSHOT_HOSTS.has(new URL(targetUrl).hostname);
+  } catch {
+    return false;
+  }
 };
 
 const isValidOrigin = (headersList: ReadonlyHeaders) => {
