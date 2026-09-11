@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "icons": "node scripts/generate-icons.mjs",
     "out": "bun outdated",
     "up": "bun update",
     "preinstall": "npx only-allow bun",
