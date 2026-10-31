@@ -69,7 +69,7 @@ RUN npx --yes playwright install --with-deps chromium \
 # =====================================================================
 FROM browser AS runtime
 
-COPY --from=build /app/.next ./.next
+COPY --chown=node:node --from=build /app/.next ./.next
 # `public/` now holds the tracked logo. Metadata assets (icon.svg, apple-icon,
 # the social card) live under src/app/ and are already baked into .next, so this
 # is only for genuinely static files served from the web root.
